@@ -40,7 +40,7 @@
             android:paddingStart="@dimen/_20sdp"
             android:paddingEnd="@dimen/_20sdp"
             android:text="Get started"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_gravity="center"
             android:textColor="@color/white" />
 

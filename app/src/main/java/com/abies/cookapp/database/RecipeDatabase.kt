@@ -4,24 +4,30 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.abies.cookapp.dao.RecipeDao
-import com.abies.cookapp.entities.Recipes
+import com.abies.cookapp.entities.*
+import com.abies.cookapp.entities.converter.CategoryListConverter
+import com.abies.cookapp.entities.converter.MealListConverter
 
-@Database(entities = [Recipes::class], version = 1, exportSchema = false)
-abstract class RecipeDatabase: RoomDatabase(){
+@Database(entities = [Recipes::class,CategoryItems::class,Category::class,Meal::class,MealsItems::class],version = 1,exportSchema = false)
+@TypeConverters(CategoryListConverter::class,MealListConverter::class)
+abstract class RecipeDatabase: RoomDatabase() {
+
     companion object{
-        var recipeDatabase: RecipeDatabase ?= null
+
+        var recipesDatabase:RecipeDatabase? = null
 
         @Synchronized
         fun getDatabase(context: Context): RecipeDatabase{
-            if(recipeDatabase != null){
-                recipeDatabase = Room.databaseBuilder(
-                    context,
-                    RecipeDatabase::class.java,
-                    "recipe.db"
-                ).build()
+            if (recipesDatabase == null){
+                recipesDatabase = Room.databaseBuilder(
+                        context,
+                        RecipeDatabase::class.java,
+                        "recipe.db"
+                ).fallbackToDestructiveMigration().build()
             }
-            return recipeDatabase!!
+            return recipesDatabase!!
         }
     }
 
